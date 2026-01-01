@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20 Video Viral - Verifikasi Akses</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #0f0f0f;
+            color: #fff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.4;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        
+        /* Overlay Verifikasi */
+        .verification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .verification-box {
+            background-color: rgba(26, 26, 26, 0.95);
+            border: 2px solid #ff4757;
+            border-radius: 15px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .verification-icon {
+            font-size: 60px;
+            color: #ff4757;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        .verification-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ff4757;
+        }
+        
+        .verification-text {
+            font-size: 16px;
+            margin-bottom: 25px;
+            color: #ccc;
+            line-height: 1.5;
+        }
+        
+        .verification-steps {
+            background-color: rgba(255, 71, 87, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid #ff4757;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .step.completed {
+            background-color: rgba(0, 255, 0, 0.1);
+            border-left: 4px solid #00ff00;
+        }
+        
+        .step-number {
+            background-color: #ff4757;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step.completed .step-number {
+            background-color: #00ff00;
+        }
+        
+        .step-content {
+            text-align: left;
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .step-desc {
+            font-size: 14px;
+            color: #aaa;
+        }
+        
+        .link-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ff4757;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+            margin-top: 8px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .link-button:hover {
+            background-color: #ff3747;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        }
+        
+        .link-button.completed {
+            background-color: #00aa00;
+        }
+        
+        .link-button.completed:hover {
+            background-color: #008800;
+        }
+        
+        .link-button i {
+            margin-right: 10px;
+        }
+        
+        .timer {
+            font-size: 14px;
+            color: #ff4757;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #333;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #ff4757;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .access-button {
+            background-color: #00aa00;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .access-button:hover {
+            background-color: #008800;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 0, 0.3);
+        }
+        
+        .hidden-content {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 1s;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Video Grid Styles */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .video-card {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #333;
+            position: relative;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.2);
+            border-color: #555;
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            height: 160px;
+            width: 100%;
+            background-color: #000000;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .video-thumbnail video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .duration {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .video-info {
+            padding: 15px;
+        }
+        
+        .video-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #f0f0f0;
+            line-height: 1.3;
+            min-height: 42px;
+        }
+        
+        .live-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background-color: #ff4757;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            z-index: 2;
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 71, 87, 0.8);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 2;
+        }
+        
+        .video-thumbnail:hover .play-button {
+            opacity: 1;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ff4757;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Modal Styles */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #1a1a1a;
+            width: 70%;
+            height: 70%;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 20px;
+        }
+        
+        .modal-video-title {
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #333;
+            background-color: #1a1a1a;
+        }
+        
+        .modal-video-container {
+            flex: 1;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #modalVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .modal-controls {
+            padding: 10px 20px;
+            background-color: #1a1a1a;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .fullscreen-btn {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .fullscreen-btn:hover {
+            background-color: #ff3747;
+        }
+        
+        .modal-video-container.fullscreen {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+        
+        @media (max-width: 1024px) {
+            .modal-content {
+                width: 80%;
+                height: 60%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .verification-box {
+                padding: 30px 20px;
+            }
+            
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+            }
+            
+            .modal-content {
+                width: 90%;
+                height: 50%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                height: 40%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Overlay Verifikasi -->
+    <div class="verification-overlay" id="verificationOverlay">
+        <div class="verification-box">
+            <div class="verification-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            
+            <h2 class="verification-title">VERIFIKASI AKSES DIPERLUKAN</h2>
+            
+            <p class="verification-text">
+                Untuk mengakses kumpulan video eksklusif, Anda harus mengunjungi semua tautan di bawah ini.
+                Setelah semua tautan berhasil dikunjungi, akses akan diberikan otomatis.
+            </p>
+            
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+            
+            <div class="verification-steps">
+                <div class="step" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Klik Link Pertama</div>
+                        <div class="step-desc">Klik tautan untuk memulai verifikasi</div>
+                    </div>
+                </div>
+                
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Klik Link Kedua</div>
+                        <div class="step-desc">Klik tautan untuk menyelesaikan verifikasi</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="link-button" id="link1Btn" onclick="openLink('https://s.shopee.co.id/9fEFxmUSTQ', 1)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 1
+            </button>
+            
+            <button class="link-button" id="link2Btn" onclick="openLink('https://otieu.com/4/9703244', 2)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 2
+            </button>
+            
+            <button class="link-button" id="link3Btn" onclick="openLink('https://otieu.com/4/9815426', 3)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 3
+            </button>
+            
+            <button class="link-button" id="link4Btn" onclick="openLink('https://otieu.com/4/9815424', 4)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 4
+            </button>
+            
+            <button class="link-button" id="link5Btn" onclick="openLink('https://otieu.com/4/10071971', 5)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 5
+            </button>
+            
+            <button class="link-button" id="link6Btn" onclick="openLink('https://otieu.com/4/9703236', 6)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 6
+            </button>
+            
+            <button class="link-button" id="link7Btn" onclick="openLink('https://otieu.com/4/9815427', 7)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 7
+            </button>
+            
+            <button class="link-button" id="link8Btn" onclick="openLink('https://otieu.com/4/9815425', 8)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 8
+            </button>
+            
+            <button class="link-button" id="link9Btn" onclick="openLink('https://otieu.com/4/9815422', 9)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 9
+            </button>
+            
+            <button class="link-button" id="link10Btn" onclick="openLink('https://otieu.com/4/9815420', 10)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 10
+            </button>
+            
+            <button class="link-button" id="link11Btn" onclick="openLink('https://otieu.com/4/9815428', 11)">
+                <i class="fas fa-external-link-alt"></i> KLIK LINK VERIFIKASI 11
+            </button>
+            
+            <div class="timer" id="timer">
+                Tunggu beberapa detik setelah mengunjungi setiap tautan
+            </div>
+            
+            <button class="access-button" id="accessButton" onclick="grantAccess()">
+                <i class="fas fa-unlock"></i> AKSES VIDEO SEKARANG
+            </button>
+        </div>
+    </div>
+
+    <!-- Konten Video (tersembunyi sampai verifikasi) -->
+    <div class="hidden-content" id="videoContent">
+        <h1 style="margin-bottom: 20px; color: #ff4757; text-align: center;">
+            <i class="fas fa-video"></i> 20 VIDEO VIRAL EKSKLUSIF
+        </h1>
+        
+        <div class="video-grid" id="videoGrid">
+            <!-- Video akan dimuat oleh JavaScript -->
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="modal-content">
+            <div class="close-modal" id="closeModal">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="modal-video-title" id="modalTitle">Judul Video</div>
+            <div class="modal-video-container" id="modalVideoContainer">
+                <video id="modalVideo" controls>
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="modal-controls">
+                <button class="fullscreen-btn" id="fullscreenBtn">
+                    <i class="fas fa-expand"></i> Fullscreen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Status verifikasi
+        let link1Clicked = false;
+        let link2Clicked = false;
+        let link3Clicked = false;
+        let link4Clicked = false;
+        let link5Clicked = false;
+        let link6Clicked = false;
+        let link7Clicked = false;
+        let link8Clicked = false;
+        let link9Clicked = false;
+        let link10Clicked = false;
+        let link11Clicked = false;
+        let verificationComplete = false;
+        
+        // Array link video
+        const videoLinks = [
+            "https://cdn.videy.co/ASB09ik81.mp4",
+            "https://cdn.videy.co/ASgIAmd61.mp4",
+            "https://cdn.videy.co/ASlPKjNV1.mp4",
+            "https://cdn.videy.co/aSMMnvHt1.mp4",
+            "https://cdn.videy.co/aT4M6bxd1.mp4",
+            "https://cdn.videy.co/atqWhfjZ1.mp4",
+            "https://cdn.videy.co/Attvl5Sm1.mp4",
+            "https://cdn.videy.co/atXESOpi1.mp4",
+            "https://cdn.videy.co/Au5dhJGT1.mp4",
+            "https://cdn.videy.co/AUvpvN4K1.mp4",
+            "https://cdn.videy.co/AuXmvhO61.mp4",
+            "https://cdn.videy.co/aUzauRrJ1.mp4",
+            "https://cdn.videy.co/AV3xkWLK1.mp4",
+            "https://cdn.videy.co/AvAWwWKp1.mp4",
+            "https://cdn.videy.co/AVdxJcC81.mp4",
+            "https://cdn.videy.co/avjH6COW1.mp4",
+            "https://cdn.videy.co/Aw1OgDr11.mp4",
+            "https://cdn.videy.co/AWpBp3Ka1.mp4",
+            "https://cdn.videy.co/AWjN5XTI1.mp4",
+            "https://cdn.videy.co/AX4R6fMi1.mp4"
+        ];
+
+        // Judul video
+        const videoTitles = [
+            "VIDEO VIRAL 1",
+            "VIDEO VIRAL 2",
+            "VIDEO VIRAL 3",
+            "VIDEO VIRAL 4",
+            "VIDEO VIRAL 5",
+            "VIDEO VIRAL 6",
+            "VIDEO VIRAL 7",
+            "VIDEO VIRAL 8",
+            "VIDEO VIRAL 9",
+            "VIDEO VIRAL 10",
+            "VIDEO VIRAL 11",
+            "VIDEO VIRAL 12",
+            "VIDEO VIRAL 13",
+            "VIDEO VIRAL 14",
+            "VIDEO VIRAL 15",
+            "VIDEO VIRAL 16",
+            "VIDEO VIRAL 17",
+            "VIDEO VIRAL 18",
+            "VIDEO VIRAL 19",
+            "VIDEO VIRAL 20"
+        ];
+
+        // Fungsi untuk membuka tautan verifikasi
+        function openLink(url, linkNumber) {
+            // Buka tautan di tab baru
+            window.open(url, '_blank');
+            
+            // Tandai tautan telah diklik
+            if (linkNumber === 1) {
+                link1Clicked = true;
+                document.getElementById('step1').classList.add('completed');
+                document.getElementById('link1Btn').classList.add('completed');
+                document.getElementById('link1Btn').innerHTML = '<i class="fas fa-check"></i> LINK 1 TELAH DIKLIK';
+                document.getElementById('link1Btn').disabled = true;
+            } else if (linkNumber === 2) {
+                link2Clicked = true;
+                document.getElementById('step2').classList.add('completed');
+                document.getElementById('link2Btn').classList.add('completed');
+                document.getElementById('link2Btn').innerHTML = '<i class="fas fa-check"></i> LINK 2 TELAH DIKLIK';
+                document.getElementById('link2Btn').disabled = true;
+            } else if (linkNumber === 3) {
+                link3Clicked = true;
+                document.getElementById('link3Btn').classList.add('completed');
+                document.getElementById('link3Btn').innerHTML = '<i class="fas fa-check"></i> LINK 3 TELAH DIKLIK';
+                document.getElementById('link3Btn').disabled = true;
+            } else if (linkNumber === 4) {
+                link4Clicked = true;
+                document.getElementById('link4Btn').classList.add('completed');
+                document.getElementById('link4Btn').innerHTML = '<i class="fas fa-check"></i> LINK 4 TELAH DIKLIK';
+                document.getElementById('link4Btn').disabled = true;
+            } else if (linkNumber === 5) {
+                link5Clicked = true;
+                document.getElementById('link5Btn').classList.add('completed');
+                document.getElementById('link5Btn').innerHTML = '<i class="fas fa-check"></i> LINK 5 TELAH DIKLIK';
+                document.getElementById('link5Btn').disabled = true;
+            } else if (linkNumber === 6) {
+                link6Clicked = true;
+                document.getElementById('link6Btn').classList.add('completed');
+                document.getElementById('link6Btn').innerHTML = '<i class="fas fa-check"></i> LINK 6 TELAH DIKLIK';
+                document.getElementById('link6Btn').disabled = true;
+            } else if (linkNumber === 7) {
+                link7Clicked = true;
+                document.getElementById('link7Btn').classList.add('completed');
+                document.getElementById('link7Btn').innerHTML = '<i class="fas fa-check"></i> LINK 7 TELAH DIKLIK';
+                document.getElementById('link7Btn').disabled = true;
+            } else if (linkNumber === 8) {
+                link8Clicked = true;
+                document.getElementById('link8Btn').classList.add('completed');
+                document.getElementById('link8Btn').innerHTML = '<i class="fas fa-check"></i> LINK 8 TELAH DIKLIK';
+                document.getElementById('link8Btn').disabled = true;
+            } else if (linkNumber === 9) {
+                link9Clicked = true;
+                document.getElementById('link9Btn').classList.add('completed');
+                document.getElementById('link9Btn').innerHTML = '<i class="fas fa-check"></i> LINK 9 TELAH DIKLIK';
+                document.getElementById('link9Btn').disabled = true;
+            } else if (linkNumber === 10) {
+                link10Clicked = true;
+                document.getElementById('link10Btn').classList.add('completed');
+                document.getElementById('link10Btn').innerHTML = '<i class="fas fa-check"></i> LINK 10 TELAH DIKLIK';
+                document.getElementById('link10Btn').disabled = true;
+            } else if (linkNumber === 11) {
+                link11Clicked = true;
+                document.getElementById('link11Btn').classList.add('completed');
+                document.getElementById('link11Btn').innerHTML = '<i class="fas fa-check"></i> LINK 11 TELAH DIKLIK';
+                document.getElementById('link11Btn').disabled = true;
+            }
+            
+            // Update progress bar
+            updateProgress();
+            
+            // Cek apakah semua tautan telah diklik
+            checkVerification();
+        }
+        
+        // Fungsi untuk update progress bar
+        function updateProgress() {
+            const progress = document.getElementById('progressBar');
+            let progressValue = 0;
+            let totalLinks = 11;
+            let clickedLinks = 0;
+            
+            // Hitung berapa link yang sudah diklik
+            if (link1Clicked) clickedLinks++;
+            if (link2Clicked) clickedLinks++;
+            if (link3Clicked) clickedLinks++;
+            if (link4Clicked) clickedLinks++;
+            if (link5Clicked) clickedLinks++;
+            if (link6Clicked) clickedLinks++;
+            if (link7Clicked) clickedLinks++;
+            if (link8Clicked) clickedLinks++;
+            if (link9Clicked) clickedLinks++;
+            if (link10Clicked) clickedLinks++;
+            if (link11Clicked) clickedLinks++;
+            
+            // Hitung persentase
+            progressValue = (clickedLinks / totalLinks) * 100;
+            
+            progress.style.width = `${progressValue}%`;
+        }
+        
+        // Fungsi untuk mengecek verifikasi
+        function checkVerification() {
+            // Jika semua tautan telah diklik, berikan akses
+            if (link1Clicked && link2Clicked && link3Clicked && link4Clicked && 
+                link5Clicked && link6Clicked && link7Clicked && link8Clicked && 
+                link9Clicked && link10Clicked && link11Clicked && !verificationComplete) {
+                verificationComplete = true;
+                
+                // Tampilkan tombol akses setelah 3 detik
+                setTimeout(() => {
+                    const accessButton = document.getElementById('accessButton');
+                    const timer = document.getElementById('timer');
+                    
+                    timer.style.display = 'none';
+                    accessButton.style.display = 'block';
+                    accessButton.style.animation = 'bounce 2s infinite';
+                }, 3000);
+            }
+        }
+        
+        // Fungsi untuk memberikan akses
+        function grantAccess() {
+            // Sembunyikan overlay verifikasi
+            document.getElementById('verificationOverlay').style.display = 'none';
+            
+            // Tampilkan konten video
+            document.getElementById('videoContent').style.display = 'block';
+            
+            // Render video
+            renderVideos();
+            
+            // Set cookie atau local storage untuk mengingat verifikasi (opsional)
+            localStorage.setItem('videoAccessVerified', 'true');
+            document.cookie = "videoAccessVerified=true; max-age=86400"; // 24 jam
+        }
+        
+        // Fungsi untuk memformat durasi
+        function formatDuration(seconds) {
+            if (isNaN(seconds) || seconds === 0) {
+                return "00:00";
+            }
+            
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = Math.floor(seconds % 60);
+            
+            if (hours > 0) {
+                return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            } else {
+                return `${minutes}:${secs.toString().padStart(2, '0')}`;
+            }
+        }
+
+        // Fungsi untuk mendapatkan durasi video
+        async function getVideoDuration(videoUrl) {
+            return new Promise((resolve) => {
+                const video = document.createElement('video');
+                video.preload = 'metadata';
+                
+                video.onloadedmetadata = function() {
+                    window.URL.revokeObjectURL(video.src);
+                    resolve(video.duration);
+                };
+                
+                video.onerror = function() {
+                    resolve(Math.floor(Math.random() * 180) + 120);
+                };
+                
+                video.src = videoUrl;
+            });
+        }
+
+        // Fungsi untuk membuat thumbnail video
+        function createVideoThumbnail(videoUrl, duration, index) {
+            const container = document.createElement('div');
+            container.className = 'video-thumbnail';
+            
+            const video = document.createElement('video');
+            video.muted = true;
+            video.playsInline = true;
+            video.preload = 'metadata';
+            video.src = videoUrl;
+            
+            container.addEventListener('mouseenter', () => {
+                video.currentTime = 1;
+                video.play().catch(e => console.log("Autoplay diblokir"));
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+            
+            const durationElement = document.createElement('div');
+            durationElement.className = 'duration';
+            durationElement.textContent = formatDuration(duration);
+            
+            const playButton = document.createElement('div');
+            playButton.className = 'play-button';
+            playButton.innerHTML = '<i class="fas fa-play"></i>';
+            
+            container.appendChild(video);
+            container.appendChild(durationElement);
+            container.appendChild(playButton);
+            
+            container.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openVideoModal(videoUrl, index);
+            });
+            
+            return container;
+        }
+
+        // Fungsi untuk membuka modal video
+        function openVideoModal(videoUrl, index) {
+            const modal = document.getElementById('videoModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            modalTitle.textContent = videoTitles[index] || `Video ${index + 1}`;
+            modalVideo.src = videoUrl;
+            modalVideo.currentTime = 0;
+            
+            modal.style.display = 'flex';
+            modalVideo.play().catch(e => {
+                console.log("Video autoplay diblokir, klik tombol play untuk mulai");
+            });
+        }
+
+        // Fungsi untuk menutup modal video
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            modalVideo.pause();
+            modalVideo.src = '';
+            modal.style.display = 'none';
+            
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        }
+
+        // Fungsi untuk toggle fullscreen
+        function toggleFullscreen() {
+            const modalContainer = document.getElementById('modalVideoContainer');
+            
+            if (!document.fullscreenElement) {
+                if (modalContainer.requestFullscreen) {
+                    modalContainer.requestFullscreen();
+                } else if (modalContainer.webkitRequestFullscreen) {
+                    modalContainer.webkitRequestFullscreen();
+                } else if (modalContainer.msRequestFullscreen) {
+                    modalContainer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        // Fungsi untuk merender video
+        async function renderVideos() {
+            const videoGrid = document.getElementById('videoGrid');
+            
+            for (let i = 0; i < videoLinks.length; i++) {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.innerHTML = `
+                    <div class="video-thumbnail" style="display: flex; align-items: center; justify-content: center;">
+                        <div class="loading"></div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">${videoTitles[i] || `Video ${i+1}`}</div>
+                    </div>
+                `;
+                videoGrid.appendChild(videoCard);
+            }
+            
+            for (let i = 0; i < videoLinks.length; i++) {
+                try {
+                    const duration = await getVideoDuration(videoLinks[i]);
+                    const videoCard = videoGrid.children[i];
+                    
+                    const thumbnailContainer = videoCard.querySelector('.video-thumbnail');
+                    thumbnailContainer.innerHTML = '';
+                    
+                    const newThumbnail = createVideoThumbnail(videoLinks[i], duration, i);
+                    thumbnailContainer.parentNode.replaceChild(newThumbnail, thumbnailContainer);
+                    
+                    const videoTitle = videoCard.querySelector('.video-title');
+                    videoTitle.textContent = videoTitles[i] || `Video ${i+1}`;
+                    
+                } catch (error) {
+                    console.error(`Error memuat video ${i+1}:`, error);
+                    const videoCard = videoGrid.children[i];
+                    const duration = 180;
+                    
+                    const thumbnailContainer = videoCard.querySelector('.video-thumbnail');
+                    thumbnailContainer.innerHTML = '';
+                    
+                    const newThumbnail = createVideoThumbnail(videoLinks[i], duration, i);
+                    thumbnailContainer.parentNode.replaceChild(newThumbnail, thumbnailContainer);
+                }
+            }
+        }
+
+        // Inisialisasi halaman
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cek apakah sudah pernah diverifikasi (opsional)
+            const isVerified = localStorage.getItem('videoAccessVerified') === 'true' || 
+                             document.cookie.includes('videoAccessVerified=true');
+            
+            if (isVerified) {
+                // Langsung berikan akses jika sudah diverifikasi sebelumnya
+                document.getElementById('verificationOverlay').style.display = 'none';
+                document.getElementById('videoContent').style.display = 'block';
+                renderVideos();
+            } else {
+                // Tampilkan overlay verifikasi
+                document.getElementById('verificationOverlay').style.display = 'flex';
+            }
+            
+            // Setup modal video
+            document.getElementById('closeModal').addEventListener('click', closeVideoModal);
+            document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+            
+            document.getElementById('videoModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeVideoModal();
+                }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeVideoModal();
+                }
+            });
+            
+            document.addEventListener('fullscreenchange', function() {
+                const modalContainer = document.getElementById('modalVideoContainer');
+                if (!document.fullscreenElement) {
+                    modalContainer.classList.remove('fullscreen');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
